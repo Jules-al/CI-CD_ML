@@ -1,0 +1,38 @@
+
+name: Continuous Integration
+
+# déclencheur (push/pull sur main + manuel)
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+# Permissions nécessaires pour que CML puisse écrire des commentaires sur GitHub
+permissions: write-all
+
+jobs:
+  build:
+    #
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 
+      - uses: actions/checkout@v3
+      - uses: iterative/setup-cml@v2
+      
+      # diverses commandes make
+      - name: Install Packages
+        run: make install
+        
+      - name: Format
+        run: make format
+        
+      - name: Train
+        run: make train
+        
+      - name: Evaluation
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: make eval
