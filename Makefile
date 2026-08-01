@@ -18,5 +18,6 @@ eval:
 update-branch:
 	git config --global user.name "$(USER_NAME)"
 	git config --global user.email "$(USER_EMAIL)"
+	git add -A
 	git commit -am "Update model and metrics"
 	git push --force origin HEAD:update
